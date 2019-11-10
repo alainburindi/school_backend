@@ -4,7 +4,7 @@ import links.schema
 import authentication.schema
 
 
-class Query(links.schema.Query, graphene.ObjectType):
+class Query(authentication.schema.Query, links.schema.Query, graphene.ObjectType):
     pass
 
 
