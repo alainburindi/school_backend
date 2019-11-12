@@ -4,7 +4,7 @@ FROM ubuntu:latest
 
 
 LABEL version="1.0"
-LABEL maintainer="olumide ogundele <alainburindi62@gmail.com>"
+LABEL maintainer="alain burindi <alainburindi62@gmail.com>"
 LABEL project.name="school"
 
 # set environment variables
