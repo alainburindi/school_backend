@@ -17,22 +17,19 @@ class Query(graphene.ObjectType):
 
 
 class CreateLink(graphene.Mutation):
-    id = graphene.Int()
-    url = graphene.String()
-    description = graphene.String()
+    link = graphene.Field(LinkType)
 
     class Arguments:
         url = graphene.String()
         description = graphene.String()
 
     def mutate(self, info, url, description):
-        link = Link(url=url, description=description)
+        user = info.context.user if not info.context.user.is_anonymous else None
+        link = Link(url=url, description=description, posted_by=user)
         link.save()
 
         return CreateLink(
-            id=link.id,
-            url=link.url,
-            description=link.description,
+            link=link
         )
 
 
