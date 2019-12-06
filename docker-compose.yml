@@ -1,0 +1,24 @@
+version: "3.5"
+services:
+  database:
+    restart: always
+    image: postgres:10.1
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=
+      - POSTGRES_DB=school
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./school_db:/var/lib/postgresql/data
+  school-api:
+    restart: always
+    build:
+      context: .
+    depends_on:
+      - database
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/usr/school
+    entrypoint: ["sh", "init.sh"]
