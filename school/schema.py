@@ -1,18 +1,19 @@
 import graphene
 import graphql_jwt
 
-import links.schema
-import authentication.schema
+from school.apps.authentication import schema as auth_schema
 
 
-class Query(authentication.schema.Query, links.schema.Query, graphene.ObjectType):
-    pass
+# class Query(auth_schema.Query, graphene.ObjectType):
+#     pass
 
 
-class Mutation(authentication.schema.Mutation, links.schema.Mutation, graphene.ObjectType):
+class Mutation(
+    auth_schema.Mutation, graphene.ObjectType
+):
     token_auth = graphql_jwt.ObtainJSONWebToken().Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
 
 
-schema = graphene.Schema(query=Query, mutation=Mutation)
+schema = graphene.Schema(mutation=Mutation)

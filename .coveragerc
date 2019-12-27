@@ -1,0 +1,6 @@
+[run]
+ omit =
+    */Library/Python/3.7/*
+    */migrations/*
+    Amazon_customers/*
+    manage.py
