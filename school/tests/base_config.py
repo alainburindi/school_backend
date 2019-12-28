@@ -1,5 +1,6 @@
 import json
 from django.test import TestCase, Client
+from django.contrib.auth.models import User
 
 
 class TestConfig(TestCase):
@@ -44,3 +45,23 @@ class TestConfig(TestCase):
     #         content_type=content_type)
     #     json_response = json.loads(response.content.decode())
     #     return json_response
+
+    def setUp(self):
+        self.default_user_data = {
+            "email": "alain@school.com",
+            "username": "Alainb", "password": "Password123"
+        }
+
+        self.default_user = self.register_user(self.default_user_data)
+
+    def register_user(self, user):
+        """
+        register a new user
+        """
+        # email = user["email"]
+        # mobile_number = user["mobile_number"]
+        # password = user["password"]
+        user = User.objects.create_user(**user)
+        user.is_active = True
+        user.save()
+        return user

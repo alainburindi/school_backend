@@ -8,3 +8,21 @@ create_user = '''mutation{{
                 }}
             }}
         }} '''
+
+login_user = '''
+mutation{{
+  login(email: "{email}", username:"{username}", password:"{password}"){{
+    message
+    token
+    }}
+  }}
+'''
+
+login_empty_email_and_username = '''
+mutation{
+  login(password:"password234"){
+    message
+    token
+    }
+  }
+'''
