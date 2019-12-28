@@ -8,6 +8,9 @@ from graphql_jwt.utils import jwt_encode, jwt_payload
 
 
 from ..types import UserType
+from school.utils.messages.authentication_response import (
+    AUTH_SUCCESS, AUTH_ERROR
+)
 
 
 class LoginUser(graphene.Mutation):
@@ -25,20 +28,20 @@ class LoginUser(graphene.Mutation):
         username = kwargs.get('username')
         password = kwargs.get('password')
         if email is None and username is None:
-            raise GraphQLError("Invalid login credentials")
+            raise GraphQLError(AUTH_ERROR["invalid_credentials"])
         try:
             user = User.objects.get(
                 Q(username=username) | Q(email=email)
             )
             auth_user = check_password(password, user.password)
             if not auth_user:
-                raise GraphQLError("Invalid login credentials")
+                raise GraphQLError(AUTH_ERROR["invalid_credentials"])
             payload = jwt_payload(user)
             token = jwt_encode(payload)
             return LoginUser(
-                message="login successful",
+                message=AUTH_SUCCESS["success_login"],
                 token=token,
                 user=user
             )
         except ObjectDoesNotExist:
-            raise GraphQLError("Invalid login credentials")
+            raise GraphQLError(AUTH_ERROR["invalid_credentials"])
