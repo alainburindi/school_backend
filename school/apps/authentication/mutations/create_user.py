@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 import graphene
 from graphql import GraphQLError
 from django.core.validators import validate_email
+from django.db.models import Q
 
 from school.utils.app_utils.validator import validator
 from school.utils.messages.authentication_response import (
@@ -21,21 +22,26 @@ class CreateUser(graphene.Mutation):
 
     def mutate(self, info, **kwargs):
         email = kwargs.get('email')
+        username = kwargs.get('username')
         validate_email(email)
         password = validator.validate_password(password=kwargs.get('password'))
-        user = User.objects.filter(email=email).first()
-        if user:
-            raise GraphQLError(
-                AUTH_ERROR["email_in_use"].format(email))
-        else:
-            user = User(
-                username=kwargs.get('username'),
-                email=kwargs.get('email')
-            )
-            user.set_password(password)
-            user.save()
+        # user = User.objects.get(Q(username=username) | Q(email=email))
+        # if user:
+        #     raise GraphQLError(
+        #         AUTH_ERROR["email_username_in_use"].format(key="email", value=email))
+        # # user = User.objects.filter(username=username).first()
+        # if user:
+        #     raise GraphQLError(
+        #         AUTH_ERROR["email_username_in_use"].format(key="username", value=username))
+        validator.validate_user(**kwargs)
+        user = User(
+            username=username,
+            email=email
+        )
+        user.set_password(password)
+        user.save()
 
-            return CreateUser(
-                user=user,
-                message=AUTH_SUCCESS["created"]
-            )
+        return CreateUser(
+            user=user,
+            message=AUTH_SUCCESS["created"]
+        )

@@ -4,8 +4,8 @@ AUTH_SUCCESS = {
 }
 
 AUTH_ERROR = {
-    "email_in_use": "User with the email {} already exists",
+    "email_username_in_use": "User with the {key} {value} already exists",
     "invalid_password": "password must have at least 8 characters,"
                         " a number and a capital letter.",
-    "invalid_credentials": "Invalid login credentials"
+    "invalid_credentials": "Invalid login credentials",
 }

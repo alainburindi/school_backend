@@ -14,7 +14,7 @@ class TestAuth(TestConfig):
         self.user = {"email": "alainsecond@school.com",
                      "username": "Alainsecond", "password": "Password123"}
 
-    def test_good(self):
+    def test_signup(self):
         response = self.query(create_user.format(**self.user))
         self.assertEqual(AUTH_SUCCESS["created"],
                          response["data"]["createUser"]["message"])
@@ -22,7 +22,13 @@ class TestAuth(TestConfig):
             response["data"]["createUser"]["user"], self.user)
         # used email
         response = self.query(create_user.format(**self.user))
-        self.assertEqual(AUTH_ERROR["email_in_use"].format(self.user["email"]),
+        self.assertEqual(AUTH_ERROR["email_username_in_use"].format(key="email", value=self.user["email"]),
+                         response["errors"][0]["message"])
+
+    def test_duplicate_username(self):
+        self.default_user_data['email'] = "unusedemail@school.com"
+        response = self.query(create_user.format(**self.default_user_data))
+        self.assertEqual(AUTH_ERROR["email_username_in_use"].format(key="username", value=self.default_user_data["username"]),
                          response["errors"][0]["message"])
 
     def test_invalid_password(self):
