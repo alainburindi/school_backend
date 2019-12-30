@@ -1,7 +1,10 @@
 import re
 from graphql import GraphQLError
+from django.contrib.auth.models import User
+from django.db.models import Q
 
 from school.utils.messages.authentication_response import AUTH_ERROR
+from .responses import error
 
 
 class Validator:
@@ -9,7 +12,7 @@ class Validator:
     All validations of fields within the system
 
     fields:
-        new_password(str): password
+        validate_password(str): password
     """
 
     def validate_password(self, password):
@@ -26,6 +29,24 @@ class Validator:
         if regex is None:
             raise GraphQLError(AUTH_ERROR["invalid_password"])
         return self.password
+
+    @classmethod
+    def validate_user(self, **kwargs):
+        """
+        Validate user's email and username
+        Args:
+            username(str): the user's username
+            email(str): the user's email
+        returns:
+            error(GraphQLError): if the email or username is already used
+        """
+        email = kwargs.get("email")
+        username = kwargs.get("username")
+        users = User.objects.filter(Q(username=username) | Q(email=email))
+        if email in [user.email for user in users]:
+            error.used_email_or_username("email", email)
+        elif username in [user.username for user in users]:
+            error.used_email_or_username("username", username)
 
 
 validator = Validator()
