@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 import graphene
 from django.core.validators import validate_email
 
@@ -7,6 +6,8 @@ from school.utils.messages.authentication_response import (
     AUTH_SUCCESS
 )
 from school.apps.authentication.types import UserType
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 class CreateUser(graphene.Mutation):

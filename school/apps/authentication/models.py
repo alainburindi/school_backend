@@ -1,5 +1,6 @@
 import uuid
-from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin)
+from django.contrib.auth.models import (
+    AbstractBaseUser, PermissionsMixin, UserManager)
 from django.db import models
 
 
@@ -15,7 +16,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         default='https://res.cloudinary.com/health-id/image/upload/'
         'v1554552278/Profile_Picture_Placeholder.png'
     )
+    is_staff = models.BooleanField(default=False)
     birthday = models.DateField(auto_now=False, null=True, blank=True)
     created_at = models.DateField(auto_now_add=True)
     is_admin = models.BooleanField(default=False)
     USERNAME_FIELD = "email"
+
+    objects = UserManager()

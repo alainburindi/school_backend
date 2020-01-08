@@ -1,5 +1,4 @@
 import graphene
-from django.contrib.auth.models import User
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 from django.core.exceptions import ObjectDoesNotExist
@@ -12,6 +11,7 @@ from school.utils.messages.authentication_response import (
 )
 
 from school.utils.app_utils.responses import error
+from ..models import User
 
 
 class LoginUser(graphene.Mutation):
