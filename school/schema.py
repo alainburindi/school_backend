@@ -2,10 +2,11 @@ import graphene
 import graphql_jwt
 
 from school.apps.authentication import schema as auth_schema
+from school.apps.authentication.queries import auth_queries
 
 
-# class Query(auth_schema.Query, graphene.ObjectType):
-#     pass
+class Query(auth_queries.Query, graphene.ObjectType):
+    pass
 
 
 class Mutation(
@@ -16,4 +17,4 @@ class Mutation(
     refresh_token = graphql_jwt.Refresh.Field()
 
 
-schema = graphene.Schema(mutation=Mutation)
+schema = graphene.Schema(query=Query, mutation=Mutation)
