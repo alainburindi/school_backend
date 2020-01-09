@@ -1,6 +1,6 @@
 import re
 from graphql import GraphQLError
-from django.contrib.auth.models import User
+from school.apps.authentication.models import User
 from django.db.models import Q
 
 from school.utils.messages.authentication_response import AUTH_ERROR

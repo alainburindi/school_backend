@@ -1,5 +1,5 @@
 from graphene_django import DjangoObjectType
-from django.contrib.auth.models import User
+from .models import User
 
 
 class UserType(DjangoObjectType):

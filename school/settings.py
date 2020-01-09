@@ -41,9 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # local
     'graphene_django',
     'school.apps.authentication'
 ]
+
+AUTH_USER_MODEL = 'authentication.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
